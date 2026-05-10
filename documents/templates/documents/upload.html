@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Carica PDF - DietHelp{% endblock %}
+
+{% block content %}
+<section class="panel">
+    <h1>Carica PDF</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="button" type="submit">Carica</button>
+    </form>
+</section>
+{% endblock %}
+

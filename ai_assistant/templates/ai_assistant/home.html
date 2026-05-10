@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}AI - DietHelp{% endblock %}
+
+{% block content %}
+<section class="panel">
+    <h1>Consigli AI per lista spesa</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label>Obiettivo
+            <input name="goal" placeholder="Dimagrimento, massa, mantenimento">
+        </label>
+        <label>Preferenze
+            <textarea name="preferences" rows="3"></textarea>
+        </label>
+        <label>Allergie o alimenti da evitare
+            <textarea name="allergies" rows="3"></textarea>
+        </label>
+        <label>Calorie target
+            <input name="calorie_target" type="number" min="0">
+        </label>
+        <label>Giorni
+            <input name="days" type="number" min="1" value="7">
+        </label>
+        <button class="button" type="submit">Genera lista</button>
+    </form>
+
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+
+    {% if result %}
+        <div class="result">
+            <h2>Risultato</h2>
+            <pre>{{ result }}</pre>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}
+

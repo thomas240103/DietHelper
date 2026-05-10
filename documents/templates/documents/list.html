@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}PDF - DietHelp{% endblock %}
+
+{% block content %}
+<section class="panel">
+    <div class="section-head">
+        <h1>Documenti PDF</h1>
+        <a class="button" href="{% url 'document_upload' %}">Carica PDF</a>
+    </div>
+    <ul class="list">
+        {% for document in documents %}
+            <li>
+                <a href="{{ document.file.url }}" target="_blank" rel="noopener">{{ document.title }}</a>
+                <span>{{ document.get_document_type_display }}</span>
+            </li>
+        {% empty %}
+            <li>Nessun PDF caricato.</li>
+        {% endfor %}
+    </ul>
+</section>
+{% endblock %}
+

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Profilo - DietHelp{% endblock %}
+
+{% block content %}
+<section class="panel">
+    <h1>Profilo</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="button" type="submit">Salva</button>
+    </form>
+</section>
+{% endblock %}
+
