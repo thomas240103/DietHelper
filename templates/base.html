@@ -1,0 +1,82 @@
+{% load static %}
+<!doctype html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}DietHelp{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="sidebar">
+            <a class="brand" href="{% url 'home' %}">
+                <span class="brand-mark">DH</span>
+                <span>
+                    <strong>DietHelp</strong>
+                    <small>dashboard locale</small>
+                </span>
+            </a>
+
+            <nav class="nav" aria-label="Navigazione principale">
+                <a href="{% url 'dashboard' %}"><span class="nav-icon">D</span> Dashboard</a>
+                <a href="{% url 'nutrition_home' %}"><span class="nav-icon">N</span> Dieta</a>
+                <a href="{% url 'shopping_home' %}"><span class="nav-icon">S</span> Spesa</a>
+                <a href="{% url 'document_list' %}"><span class="nav-icon">P</span> PDF</a>
+                <a href="{% url 'workouts_home' %}"><span class="nav-icon">A</span> Palestra</a>
+                <a href="{% url 'running_home' %}"><span class="nav-icon">R</span> Corsa</a>
+                <a href="{% url 'progress_home' %}"><span class="nav-icon">G</span> Progressi</a>
+                <a href="{% url 'ai_home' %}"><span class="nav-icon">AI</span> AI</a>
+            </nav>
+
+            <button class="theme-toggle" type="button" data-theme-toggle>
+                <span class="theme-dot"></span>
+                <span data-theme-label>Dark mode</span>
+            </button>
+        </aside>
+
+        <div class="content-shell">
+            <header class="topbar">
+                <div>
+                    <span class="topbar-kicker">Workspace personale</span>
+                    <strong>Benessere, dieta e training</strong>
+                </div>
+                {% if user.is_authenticated %}
+                    <a class="topbar-action" href="{% url 'profile' %}">Profilo</a>
+                {% else %}
+                    <a class="topbar-action" href="{% url 'login' %}">Login</a>
+                {% endif %}
+            </header>
+
+            <main class="page">
+                {% block content %}{% endblock %}
+            </main>
+        </div>
+    </div>
+
+    <script>
+        const root = document.documentElement;
+        const storedTheme = localStorage.getItem("diethelp-theme");
+        if (storedTheme === "dark") {
+            root.dataset.theme = "dark";
+        }
+
+        const toggle = document.querySelector("[data-theme-toggle]");
+        const label = document.querySelector("[data-theme-label]");
+        function updateThemeLabel() {
+            label.textContent = root.dataset.theme === "dark" ? "Light mode" : "Dark mode";
+        }
+        updateThemeLabel();
+        toggle.addEventListener("click", () => {
+            if (root.dataset.theme === "dark") {
+                root.dataset.theme = "";
+                localStorage.setItem("diethelp-theme", "light");
+            } else {
+                root.dataset.theme = "dark";
+                localStorage.setItem("diethelp-theme", "dark");
+            }
+            updateThemeLabel();
+        });
+    </script>
+</body>
+</html>

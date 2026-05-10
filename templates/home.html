@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}DietHelp - Home{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-copy">
+        <p class="eyebrow">AI, dieta, spesa e allenamento</p>
+        <h1>Una dashboard locale per mangiare, muoverti e migliorare.</h1>
+        <p>Gestisci alimentazione, PDF, lista spesa, calorie, allenamenti, corsa e progressi dal tuo PC, con consigli AI quando ti servono.</p>
+        <div class="actions">
+            <a class="button" href="{% url 'dashboard' %}">Apri dashboard</a>
+            <a class="button secondary" href="{% url 'document_upload' %}">Carica PDF</a>
+        </div>
+        <div class="hero-pills">
+            <span>PDF dieta</span>
+            <span>Lista spesa AI</span>
+            <span>Progressi</span>
+        </div>
+    </div>
+    <aside class="hero-panel" aria-label="Anteprima dashboard">
+        <div class="panel-header">
+            <span>Daily score</span>
+            <strong>82%</strong>
+        </div>
+        <div class="metric-card primary">
+            <span>Oggi</span>
+            <strong>1.840 kcal</strong>
+            <small>Target 2.100 kcal</small>
+        </div>
+        <div class="mini-grid">
+            <div class="metric-card">
+                <span>Corsa</span>
+                <strong>5.2 km</strong>
+                <small>Passo 5:48</small>
+            </div>
+            <div class="metric-card">
+                <span>Spesa</span>
+                <strong>12</strong>
+                <small>Prodotti aperti</small>
+            </div>
+        </div>
+        <div class="timeline">
+            <strong>Attivita recenti</strong>
+            <div>
+                <span class="dot"></span>
+                <p>Colazione salvata</p>
+            </div>
+            <div>
+                <span class="dot"></span>
+                <p>PDF dieta caricato</p>
+            </div>
+            <div>
+                <span class="dot"></span>
+                <p>Lista spesa generata</p>
+            </div>
+        </div>
+    </aside>
+</section>
+
+<section class="quick-strip">
+    <article>
+        <span>01</span>
+        <strong>Importa PDF</strong>
+        <p>Archivia diete, schede e programmi corsa.</p>
+    </article>
+    <article>
+        <span>02</span>
+        <strong>Organizza la spesa</strong>
+        <p>Trasforma obiettivi e pasti in prodotti concreti.</p>
+    </article>
+    <article>
+        <span>03</span>
+        <strong>Monitora progressi</strong>
+        <p>Tieni insieme peso, calorie, allenamenti e corsa.</p>
+    </article>
+</section>
+{% endblock %}

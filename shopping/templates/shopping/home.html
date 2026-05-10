@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Lista Spesa - DietHelp{% endblock %}
+
+{% block content %}
+<section class="panel">
+    <h1>Lista spesa</h1>
+    <ul class="list">
+        {% for item in items %}
+            <li>{{ item.name }}{% if item.quantity %} - {{ item.quantity }}{% endif %}</li>
+        {% empty %}
+            <li>Nessun prodotto in lista.</li>
+        {% endfor %}
+    </ul>
+</section>
+{% endblock %}
+

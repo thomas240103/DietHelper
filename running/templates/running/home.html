@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block title %}Corsa - DietHelp{% endblock %}
+
+{% block content %}
+<section class="dashboard-head">
+    <div>
+        <p class="eyebrow">Running log</p>
+        <h1>Corsa</h1>
+        <p>Inserisci ogni uscita, allega file attivita e guarda distanza, durata, passo e profilo importato.</p>
+    </div>
+</section>
+
+<section class="stats-row">
+    <article>
+        <span>Distanza recente</span>
+        <strong>{{ total_distance }} km</strong>
+        <small>Ultime uscite visibili</small>
+    </article>
+    <article>
+        <span>Tempo totale</span>
+        <strong>{{ total_minutes }} min</strong>
+        <small>Somma sessioni recenti</small>
+    </article>
+</section>
+
+<section class="module-layout">
+    <div class="panel">
+        <h2>Nuova corsa</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <small class="hint">Puoi allegare GPX, TCX, FIT o CSV. Il grafico del file viene generato subito per i GPX.</small>
+            <button class="button" type="submit">Salva corsa</button>
+        </form>
+    </div>
+    <div class="panel">
+        <h2>Andamento distanza</h2>
+        {{ chart_data|json_script:"running-chart-data" }}
+        <canvas class="chart" id="runningChart" height="260"></canvas>
+    </div>
+</section>
+
+<section class="panel">
+    <div class="section-head">
+        <h2>Andamento file corsa</h2>
+        {% if latest_track %}
+            <span class="badge">{{ latest_track.date }} - {{ latest_track.track_points.count }} punti</span>
+        {% else %}
+            <span class="badge">GPX</span>
+        {% endif %}
+    </div>
+    <p class="hint">Con un file GPX vedi il profilo altimetrico dell'ultima corsa importata.</p>
+    {{ track_data|json_script:"running-track-data" }}
+    <canvas class="chart" id="runningTrackChart" height="240"></canvas>
+</section>
+
+<section class="panel">
+    <h2>Uscite registrate</h2>
+    <div class="stack-list">
+        {% for run in runs %}
+            <article class="log-item row">
+                <div>
+                    <strong>{{ run.date }}</strong>
+                    <span>{{ run.distance_km }} km - {{ run.duration_minutes }} min - {{ run.average_pace }}</span>
+                    {% if run.activity_file %}
+                        <a class="file-link" href="{{ run.activity_file.url }}" target="_blank" rel="noopener">File attivita</a>
+                    {% endif %}
+                </div>
+                {% if run.estimated_calories %}
+                    <span class="badge">{{ run.estimated_calories }} kcal</span>
+                {% endif %}
+            </article>
+        {% empty %}
+            <p class="empty">Nessuna corsa registrata.</p>
+        {% endfor %}
+    </div>
+</section>
+
+<script>
+    function drawLineChart(canvasId, values, color) {
+        const canvas = document.getElementById(canvasId);
+        if (!canvas) return;
+        const ctx = canvas.getContext("2d");
+        const rect = canvas.getBoundingClientRect();
+        const ratio = window.devicePixelRatio || 1;
+        canvas.width = rect.width * ratio;
+        canvas.height = rect.height * ratio;
+        ctx.scale(ratio, ratio);
+        const width = rect.width;
+        const height = rect.height;
+        const pad = 34;
+        ctx.clearRect(0, 0, width, height);
+        ctx.strokeStyle = "rgba(255,255,255,.16)";
+        ctx.beginPath();
+        ctx.moveTo(pad, pad);
+        ctx.lineTo(pad, height - pad);
+        ctx.lineTo(width - pad, height - pad);
+        ctx.stroke();
+        if (!values.length) return;
+        const cleanValues = values.filter((value) => value !== null);
+        const min = Math.min(...cleanValues, 0);
+        const max = Math.max(...cleanValues, 1);
+        const range = Math.max(max - min, 1);
+        const step = values.length > 1 ? (width - pad * 2) / (values.length - 1) : 0;
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        values.forEach((value, index) => {
+            if (value === null) return;
+            const x = pad + step * index;
+            const y = height - pad - (((value - min) / range) * (height - pad * 2));
+            if (index === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+        });
+        ctx.stroke();
+    }
+
+    const runningData = JSON.parse(document.getElementById("running-chart-data").textContent);
+    const trackData = JSON.parse(document.getElementById("running-track-data").textContent);
+    drawLineChart("runningChart", runningData.distance, "#66b7ff");
+    drawLineChart("runningTrackChart", trackData.elevation, "#f2b84b");
+</script>
+{% endblock %}

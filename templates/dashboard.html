@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - DietHelp{% endblock %}
+
+{% block content %}
+<section class="dashboard-head">
+    <div>
+        <p class="eyebrow">Panoramica</p>
+        <h1>Dashboard</h1>
+        <p>Accesso rapido ai moduli principali di DietHelp, con priorita e azioni chiare.</p>
+    </div>
+    <a class="button secondary" href="{% url 'ai_home' %}">Consigli AI</a>
+</section>
+
+<section class="stats-row">
+    <article>
+        <span>Calorie oggi</span>
+        <strong>1.840</strong>
+        <small>260 kcal rimanenti</small>
+    </article>
+    <article>
+        <span>Corsa settimana</span>
+        <strong>12.4 km</strong>
+        <small>+18% rispetto alla scorsa</small>
+    </article>
+    <article>
+        <span>PDF caricati</span>
+        <strong>3</strong>
+        <small>Diete e schede pronte</small>
+    </article>
+    <article>
+        <span>Spesa</span>
+        <strong>12 item</strong>
+        <small>5 gia comprati</small>
+    </article>
+</section>
+
+<section>
+    <div class="grid feature-grid">
+        <a class="card" href="{% url 'nutrition_home' %}">
+            <span class="card-icon">DI</span>
+            <h2>Dieta</h2>
+            <p>Alimenti, pasti e calorie.</p>
+            <em>Apri diario</em>
+        </a>
+        <a class="card" href="{% url 'shopping_home' %}">
+            <span class="card-icon">SP</span>
+            <h2>Lista spesa</h2>
+            <p>Prodotti da comprare e suggerimenti.</p>
+            <em>Gestisci prodotti</em>
+        </a>
+        <a class="card" href="{% url 'document_list' %}">
+            <span class="card-icon">PF</span>
+            <h2>PDF</h2>
+            <p>Diete, schede e programmi caricati.</p>
+            <em>Vedi documenti</em>
+        </a>
+        <a class="card" href="{% url 'workouts_home' %}">
+            <span class="card-icon">AL</span>
+            <h2>Allenamento</h2>
+            <p>Sessioni, esercizi e note.</p>
+            <em>Registra workout</em>
+        </a>
+        <a class="card" href="{% url 'running_home' %}">
+            <span class="card-icon">CO</span>
+            <h2>Corsa</h2>
+            <p>Distanza, durata e passo medio.</p>
+            <em>Apri running log</em>
+        </a>
+        <a class="card" href="{% url 'progress_home' %}">
+            <span class="card-icon">PR</span>
+            <h2>Progressi</h2>
+            <p>Peso, misure e andamento.</p>
+            <em>Controlla trend</em>
+        </a>
+    </div>
+</section>
+{% endblock %}
